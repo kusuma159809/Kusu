@@ -24,6 +24,7 @@ jobs:
         run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.organization=kusu-org -Dsonar.projectKey=kusu-org_new
 
   snyk-scan:
+    # Always run after SonarQube, even if SonarQube fails
     needs: sonar-scan
     if: always()
     name: Snyk Security Scan
@@ -36,6 +37,7 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
   zap-scan:
+    # Always run after Snyk, even if Snyk fails
     needs: snyk-scan
     if: always()
     name: OWASP ZAP Scan
